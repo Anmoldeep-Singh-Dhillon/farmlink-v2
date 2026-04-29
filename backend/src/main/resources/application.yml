@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: farmlink-backend
+
+  # ── Database ──────────────────────────────────────────────
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  # ── JPA / Hibernate ───────────────────────────────────────
+  jpa:
+    hibernate:
+      ddl-auto: validate          # Schema already created by 01_schema.sql
+    show-sql: false               # Set true temporarily to debug queries
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  # ── File Upload ───────────────────────────────────────────
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 50MB     # Allow multiple images per request
+
+# ── Server ────────────────────────────────────────────────
+server:
+  port: ${APP_PORT:8080}
+
+# ── JWT ───────────────────────────────────────────────────
+jwt:
+  secret: ${JWT_SECRET}
+  expiry-ms: ${JWT_EXPIRY_MS:86400000}
+
+# ── MinIO ─────────────────────────────────────────────────
+minio:
+  endpoint: ${MINIO_ENDPOINT}
+  access-key: ${MINIO_ACCESS_KEY}
+  secret-key: ${MINIO_SECRET_KEY}
+  bucket:
+    equipment: ${MINIO_BUCKET_EQUIPMENT:equipment-images}
+    operators: ${MINIO_BUCKET_OPERATORS:operator-images}
+
+# ── Geo ───────────────────────────────────────────────────
+geo:
+  default-radius-km: ${DEFAULT_SEARCH_RADIUS_KM:10}
+  max-radius-km: ${MAX_SEARCH_RADIUS_KM:100}
+
+# ── CORS ──────────────────────────────────────────────────
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
