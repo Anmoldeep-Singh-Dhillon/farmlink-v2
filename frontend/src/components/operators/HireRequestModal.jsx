@@ -53,6 +53,7 @@ export default function HireRequestModal({ operator, onClose }) {
                 type="date"
                 value={form.fromDate}
                 onChange={(e) => setForm({ ...form, fromDate: e.target.value })}
+                min={new Date().toISOString().split('T')[0]}//added new
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                 required
               />
@@ -63,7 +64,8 @@ export default function HireRequestModal({ operator, onClose }) {
                 type="date"
                 value={form.toDate}
                 onChange={(e) => setForm({ ...form, toDate: e.target.value })}
-                min={form.fromDate}
+                min={form.fromDate || new Date().toISOString().split('T')[0]}//added late
+                //min={form.fromDate}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                 required
               />

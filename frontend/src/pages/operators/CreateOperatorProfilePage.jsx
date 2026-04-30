@@ -251,10 +251,18 @@ export default function CreateOperatorProfilePage() {
               onChange={(e) => {
                 const file = e.target.files[0]
                 if (!file) return
-                const reader = new FileReader()
-                reader.onload = () => setCropSrc(reader.result)
-                reader.readAsDataURL(file)
-              }}
+                
+                const allowed = ['image/jpeg', 'image/png', 'image/webp']
+                if (!allowed.includes(file.type)) {
+                  toast.error('Only JPEG, PNG or WebP images are supported')
+                  e.target.value = ''
+                  return
+                }
+  
+  const reader = new FileReader()
+  reader.onload = () => setCropSrc(reader.result)
+  reader.readAsDataURL(file)
+}}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
             />
           </div>

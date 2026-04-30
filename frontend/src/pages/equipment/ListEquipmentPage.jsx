@@ -263,7 +263,8 @@ export default function ListEquipmentPage() {
                   <input
                     type="date"
                     value={form.availableFrom}
-                    onChange={(e) => setForm({ ...form, availableFrom: e.target.value })}
+                        onChange={(e) => setForm({ ...form, availableFrom: e.target.value })}
+                        min={new Date().toISOString().split('T')[0]}
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                     required
                   />
@@ -273,7 +274,8 @@ export default function ListEquipmentPage() {
                   <input
                     type="date"
                     value={form.availableTill}
-                    onChange={(e) => setForm({ ...form, availableTill: e.target.value })}
+                      onChange={(e) => setForm({ ...form, availableTill: e.target.value })}
+                      min={form.availableFrom || new Date().toISOString().split('T')[0]}
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                     required
                   />
@@ -287,18 +289,28 @@ export default function ListEquipmentPage() {
                 <input
                   ref={fileInputRef}
                   type="file"
-                  accept="image/*"
+                  accept="image/jpeg,image/png,image/webp"
                   multiple
                   onChange={(e) => {
-                    const files = Array.from(e.target.files)
-                    if (files.length === 0) return
-                    setPendingFiles(files)
-                    setCroppedImages([])
-                    const reader = new FileReader()
-                    reader.onload = () => setCropSrc(reader.result)
-                    reader.readAsDataURL(files[0])
-                    setCurrentCropIndex(0)
-                  }}
+                        const files = Array.from(e.target.files)
+                        if (files.length === 0) return
+                        const allowed = ['image/jpeg', 'image/png', 'image/webp']
+                        const validFiles = files.filter(file => allowed.includes(file.type))
+                        if (validFiles.length === 0) {
+                            toast.error('Only JPEG, PNG or WebP images are supported')
+                            e.target.value = ''
+                            return
+                          }
+                          if (validFiles.length !== files.length) {
+                            toast.error('Some files were skipped (only JPEG, PNG, WebP allowed)')
+                                }
+                        setPendingFiles(validFiles)
+                        setCroppedImages([])
+                        const reader = new FileReader()
+                        reader.onload = () => setCropSrc(reader.result)
+                        reader.readAsDataURL(validFiles[0])
+                        setCurrentCropIndex(0)
+                      }}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
                 />
                 {croppedImages.length > 0 && (

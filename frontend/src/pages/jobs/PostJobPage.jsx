@@ -201,6 +201,7 @@ export default function PostJobPage() {
                     type="date"
                     value={form.workFromDate}
                     onChange={(e) => setForm({ ...form, workFromDate: e.target.value })}
+                    min={new Date().toISOString().split('T')[0]}//addedlater
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                     required
                   />
