@@ -26,3 +26,5 @@ export const acceptHireRequest = (requestId) =>
 
 export const rejectHireRequest = (requestId) =>
   api.patch(`/operators/requests/${requestId}/reject`)
+
+export const deleteOperatorProfile = () => api.delete('/operators/my')

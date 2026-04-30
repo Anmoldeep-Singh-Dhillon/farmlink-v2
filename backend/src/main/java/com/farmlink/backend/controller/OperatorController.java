@@ -101,4 +101,10 @@ public class OperatorController {
     public ResponseEntity<List<OperatorHireRequest>> getSentHireRequests() {
         return ResponseEntity.ok(operatorService.getSentHireRequests());
     }
+
+    @DeleteMapping("/my")
+    public ResponseEntity<Map<String, String>> deleteMyProfile() {
+    operatorService.deleteProfile();
+    return ResponseEntity.ok(Map.of("message", "Operator profile deleted"));
+    }
 }

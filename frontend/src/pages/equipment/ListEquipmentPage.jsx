@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createListing, getMyListings, deleteListing } from '../../api/equipment'
 import toast from 'react-hot-toast'
 import { Trash2, Plus, X } from 'lucide-react'
+import ImageCropModal from '../../components/common/ImageCropModal'
 
 const EQUIPMENT_TYPES = ['Plough', 'Seeder', 'Trolley', 'Harvester', 'Tractor', 'Rotavator', 'Sprayer', 'Other']
 
@@ -10,6 +11,11 @@ export default function ListEquipmentPage() {
   const queryClient = useQueryClient()
   const [showForm, setShowForm] = useState(false)
   const [images, setImages] = useState([])
+  const [cropSrc, setCropSrc] = useState(null)
+  const [croppedImages, setCroppedImages] = useState([])
+  const [currentCropIndex, setCurrentCropIndex] = useState(0)
+  const [pendingFiles, setPendingFiles] = useState([])
+  const fileInputRef = useRef(null)
   const [form, setForm] = useState({
     equipmentType: '',
     description: '',
@@ -40,6 +46,7 @@ export default function ListEquipmentPage() {
         availableFrom: '', availableTill: '',
       })
       setImages([])
+      setCroppedImages([])
     },
     onError: (err) => toast.error(err.response?.data?.message || 'Failed to create listing'),
   })
@@ -91,7 +98,6 @@ export default function ListEquipmentPage() {
         </button>
       </div>
 
-      {/* My listings */}
       {isLoading && <div className="text-center py-12 text-gray-500">Loading...</div>}
 
       {!isLoading && myListings.length === 0 && (
@@ -108,7 +114,7 @@ export default function ListEquipmentPage() {
               <img
                 src={listing.images[0].imageUrl}
                 alt={listing.equipmentType}
-                className="w-full h-36 object-cover rounded-lg mb-3"
+                className="w-full h-36 object-cover object-top rounded-lg mb-3"
               />
             ) : (
               <div className="w-full h-36 bg-gray-100 rounded-lg mb-3 flex items-center justify-center">
@@ -165,7 +171,6 @@ export default function ListEquipmentPage() {
             </div>
 
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Equipment Type</label>
                 <select
@@ -280,14 +285,29 @@ export default function ListEquipmentPage() {
                   Images (optional)
                 </label>
                 <input
+                  ref={fileInputRef}
                   type="file"
                   accept="image/*"
                   multiple
-                  onChange={(e) => setImages(Array.from(e.target.files))}
+                  onChange={(e) => {
+                    const files = Array.from(e.target.files)
+                    if (files.length === 0) return
+                    setPendingFiles(files)
+                    setCroppedImages([])
+                    const reader = new FileReader()
+                    reader.onload = () => setCropSrc(reader.result)
+                    reader.readAsDataURL(files[0])
+                    setCurrentCropIndex(0)
+                  }}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
                 />
-                {images.length > 0 && (
-                  <p className="text-xs text-green-600 mt-1">{images.length} image(s) selected</p>
+                {croppedImages.length > 0 && (
+                  <div className="flex gap-2 mt-2 flex-wrap">
+                    {croppedImages.map((img, i) => (
+                      <img key={i} src={img.preview} className="w-16 h-16 object-cover rounded-lg border" />
+                    ))}
+                    <p className="text-xs text-green-600 w-full">{croppedImages.length} image(s) cropped</p>
+                  </div>
                 )}
               </div>
 
@@ -310,6 +330,32 @@ export default function ListEquipmentPage() {
             </form>
           </div>
         </div>
+      )}
+
+      {/* Crop modal - outside the form modal */}
+      {cropSrc && (
+        <ImageCropModal
+          imageSrc={cropSrc}
+          aspect={16 / 9}
+          onClose={() => {
+            setCropSrc(null)
+            if (fileInputRef.current) fileInputRef.current.value = ''
+          }}
+          onCropDone={(file, preview) => {
+            const newCropped = [...croppedImages, { file, preview }]
+            setCroppedImages(newCropped)
+            const nextIndex = currentCropIndex + 1
+            if (nextIndex < pendingFiles.length) {
+              setCurrentCropIndex(nextIndex)
+              const reader = new FileReader()
+              reader.onload = () => setCropSrc(reader.result)
+              reader.readAsDataURL(pendingFiles[nextIndex])
+            } else {
+              setCropSrc(null)
+              setImages(newCropped.map((c) => c.file))
+            }
+          }}
+        />
       )}
     </div>
   )

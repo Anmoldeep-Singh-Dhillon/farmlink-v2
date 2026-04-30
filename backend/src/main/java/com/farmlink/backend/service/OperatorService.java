@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.Arrays;
 import java.util.List;
+import com.farmlink.backend.enums.ListingStatus;
 
 @Service
 @RequiredArgsConstructor
@@ -36,9 +37,10 @@ public class OperatorService {
                                          MultipartFile profilePicture) {
         User currentUser = SecurityUtils.getCurrentUser();
 
-        if (operatorProfileRepository.existsByUserId(currentUser.getId())) {
-            throw new BadRequestException("You already have an operator profile");
-        }
+       if (operatorProfileRepository.findByUserIdAndStatusNot(
+        currentUser.getId(), ListingStatus.DELETED).isPresent()) {
+    throw new BadRequestException("You already have an operator profile");
+}
 
         String profilePictureUrl = null;
         String profilePictureKey = null;
@@ -91,16 +93,16 @@ public class OperatorService {
         return operatorProfileRepository.findNearbyActive(lat, lng, radius, service, pageable);
     }
 
-    public OperatorProfile getProfileById(Long id) {
-        return operatorProfileRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Operator profile not found"));
-    }
+public OperatorProfile getProfileById(Long id) {
+    return operatorProfileRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Operator profile not found"));
+}
 
-    public OperatorProfile getMyProfile() {
-        return operatorProfileRepository.findByUserId(SecurityUtils.getCurrentUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("You don't have an operator profile"));
-    }
-
+public OperatorProfile getMyProfile() {
+    return operatorProfileRepository.findByUserIdAndStatusNot(
+            SecurityUtils.getCurrentUserId(), ListingStatus.DELETED)
+            .orElseThrow(() -> new ResourceNotFoundException("You don't have an operator profile"));
+}
     @Transactional
     public OperatorHireRequest sendHireRequest(Long operatorId, HireRequestDto req) {
         User requester = SecurityUtils.getCurrentUser();
@@ -262,4 +264,15 @@ public class OperatorService {
         return hireRequestRepository.findByRequesterIdOrderByRequestedAtDesc(
                 SecurityUtils.getCurrentUserId());
     }
+    @Transactional
+    public void deleteProfile() {
+        User currentUser = SecurityUtils.getCurrentUser();
+        OperatorProfile profile = operatorProfileRepository.findByUserId(currentUser.getId())
+            .orElseThrow(() -> new ResourceNotFoundException("Operator profile not found"));
+
+        entityManager.createNativeQuery(
+            "UPDATE operator_profiles SET status = CAST('DELETED' AS listing_status) WHERE id = :id")
+            .setParameter("id", profile.getId())
+            .executeUpdate();
+        }
 }

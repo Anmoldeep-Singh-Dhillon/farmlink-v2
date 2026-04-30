@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { QueryClient } from '@tanstack/react-query'
 
 const useAuthStore = create(
   persist(
@@ -12,7 +13,11 @@ const useAuthStore = create(
 
       login: (token, user) => set({ token, user }),
 
-      logout: () => set({ token: null, user: null }),
+      logout: () => {
+        set({ token: null, user: null })
+        // Clear all cached queries on logout
+        window.queryClient?.clear()
+      },
     }),
     {
       name: 'farmlink-auth',

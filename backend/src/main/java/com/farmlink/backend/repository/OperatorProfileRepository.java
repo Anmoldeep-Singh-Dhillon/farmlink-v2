@@ -7,11 +7,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.util.Optional;
+import com.farmlink.backend.enums.ListingStatus;
+
 
 public interface OperatorProfileRepository extends JpaRepository<OperatorProfile, Long> {
 
-    Optional<OperatorProfile> findByUserId(Long userId);
-    boolean existsByUserId(Long userId);
+@Query("SELECT o FROM OperatorProfile o WHERE o.user.id = :userId AND o.status != 'DELETED' ORDER BY o.createdAt DESC")
+Optional<OperatorProfile> findByUserId(@Param("userId") Long userId);
+boolean existsByUserId(Long userId);
+Optional<OperatorProfile> findByUserIdAndStatusNot(Long userId, ListingStatus status);
+    
 
     @Query(value = """
         SELECT * FROM operator_profiles

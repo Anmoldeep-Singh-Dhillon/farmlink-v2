@@ -23,6 +23,7 @@ import ReceivedApplicationsPage from './pages/jobs/ReceivedApplicationsPage'
 import SentApplicationsPage from './pages/jobs/SentApplicationsPage'
 
 import HistoryPage from './pages/history/HistoryPage'
+import NotificationsPage from './pages/notifications/NotificationsPage'
 
 // Protected route wrapper
 const ProtectedRoute = ({ children }) => {
@@ -67,6 +68,10 @@ export default function App() {
 
           {/* History */}
           <Route path="history" element={<HistoryPage />} />
+
+          {/* Notifications */}
+          <Route path="notifications" element={<NotificationsPage />} />
+
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

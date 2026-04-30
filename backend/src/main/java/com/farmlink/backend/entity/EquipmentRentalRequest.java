@@ -18,7 +18,7 @@ public class EquipmentRentalRequest {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "images", "owner"})
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "images"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "listing_id", nullable = false)
     private EquipmentListing listing;

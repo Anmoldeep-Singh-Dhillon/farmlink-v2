@@ -14,6 +14,9 @@ const queryClient = new QueryClient({
     },
   },
 })
+// Expose to window so authStore can clear it on logout
+window.queryClient = queryClient
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

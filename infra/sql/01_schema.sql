@@ -171,7 +171,7 @@ CREATE INDEX idx_eq_req_status    ON equipment_rental_requests(status);
 -- ============================================================
 CREATE TABLE operator_profiles (
   id                  BIGSERIAL       PRIMARY KEY,
-  user_id             BIGINT          NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+  user_id             BIGINT          NOT NULL  REFERENCES users(id) ON DELETE CASCADE,
 
   -- Services offered: stored as Postgres text array
   -- e.g. {"SEEDING","PLOUGHING","TRANSPORT"}
@@ -196,6 +196,7 @@ CREATE TABLE operator_profiles (
   created_at          TIMESTAMPTZ     NOT NULL DEFAULT NOW(),
   updated_at          TIMESTAMPTZ     NOT NULL DEFAULT NOW()
 );
+
 
 CREATE INDEX idx_op_profiles_user     ON operator_profiles(user_id);
 CREATE INDEX idx_op_profiles_status   ON operator_profiles(status);

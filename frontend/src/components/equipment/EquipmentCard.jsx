@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { Phone, Send, MapPin, Calendar, Shield } from 'lucide-react'
 import RentalRequestModal from './RentalRequestModal'
+import ImageLightbox from '../common/ImageLightbox'
 
 export default function EquipmentCard({ listing }) {
   const [showModal, setShowModal] = useState(false)
+  const [lightboxIndex, setLightboxIndex] = useState(null)
 
   const isExpired = new Date(listing.availableTill) < new Date()
   const isBooked = listing.status === 'BOOKED'
@@ -14,16 +16,23 @@ export default function EquipmentCard({ listing }) {
 
         {/* Image */}
         {listing.images?.length > 0 ? (
-          <img
-            src={listing.images[0].imageUrl}
-            alt={listing.equipmentType}
-            className="w-full h-48 object-cover"
-          />
-        ) : (
-          <div className="w-full h-48 bg-gray-100 flex items-center justify-center">
-            <span className="text-4xl">🚜</span>
-          </div>
-        )}
+  <div className="relative cursor-pointer" onClick={() => setLightboxIndex(0)}>
+    <img
+      src={listing.images[0].imageUrl}
+      alt={listing.equipmentType}
+      className="w-full h-48 object-cover object-top"
+    />
+    {listing.images.length > 1 && (
+      <span className="absolute bottom-2 right-2 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded-full">
+        +{listing.images.length - 1} more
+      </span>
+    )}
+  </div>
+) : (
+  <div className="w-full h-48 bg-gray-100 flex items-center justify-center">
+    <span className="text-4xl">🚜</span>
+  </div>
+)}
 
         <div className="p-4">
           {/* Header */}
@@ -109,6 +118,13 @@ export default function EquipmentCard({ listing }) {
           onClose={() => setShowModal(false)}
         />
       )}
+      {lightboxIndex !== null && (
+  <ImageLightbox
+    images={listing.images.map((img) => img.imageUrl)}
+    startIndex={lightboxIndex}
+    onClose={() => setLightboxIndex(null)}
+  />
+)}
     </>
   )
 }
