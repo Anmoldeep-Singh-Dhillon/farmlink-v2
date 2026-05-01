@@ -5,6 +5,16 @@ metadata:
 data:
   POSTGRES_HOST: farmlink-postgres-service
   POSTGRES_PORT: "{{ .Values.postgres.port }}"
-  POSTGRES_NAME: "{{ .Values.postgres.database }}"
+  POSTGRES_DB: "{{ .Values.postgres.database }}"
   JWT_EXPIRY_MS: "{{ .Values.app.jwtExpiryMs }}"
   MINIO_ENDPOINT: "http://farmlink-minio-service:9000"
+  DEFAULT_SEARCH_RADIUS_KM: "{{ .Values.app.defaultSearchRadiusKm }}"
+  MAX_SEARCH_RADIUS_KM: "{{ .Values.app.maxSearchRadiusKm }}"
+  APP_PORT: "{{ .Values.backend.port }}"
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://farmlink-postgres-service:5432/{{ .Values.postgres.database }}"
+  MINIO_BUCKET_EQUIPMENT: "equipment-images"
+  MINIO_BUCKET_OPERATORS: "operator-images"
+  MINIO_PORT: "{{ .Values.minio.port }}"
+  CORS_ALLOWED_ORIGINS: "http://farmlink.local"
+  SPRING_PROFILES_ACTIVE: "prod"
+  SPRING_JPA_DDL_AUTO: "validate"

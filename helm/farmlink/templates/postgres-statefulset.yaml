@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: farmlink-postgres-statefulset
+spec:
+  replicas: 1 
+  serviceName: farmlink-postgres-service 
+  selector:
+    matchLabels:
+      app: farmlink-postgres
+  template:
+    metadata:
+      labels:
+        app: farmlink-postgres
+    spec:
+      containers:
+      - name: farmlink-postgres
+        image: {{ .Values.postgres.image.repository}}:{{ .Values.postgres.image.tag}}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: {{ .Values.postgres.port }}
+        env:
+          - name: POSTGRES_DB
+            valueFrom:
+              configMapKeyRef:
+                name: farmlink-configmap
+                key: POSTGRES_DB
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: farmlink-secret
+                key: POSTGRES_USER
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: farmlink-secret
+                key: POSTGRES_PASSWORD
+        volumeMounts:
+          - name: postgres-storage
+            mountPath: /var/lib/postgresql/data
+      volumeClaimTemplates:    # ← this replaces volumes section
+      - metadata:
+          name: postgres-data
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: {{ .Values.postgres.storage }}

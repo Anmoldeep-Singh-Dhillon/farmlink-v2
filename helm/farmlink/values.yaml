@@ -39,6 +39,8 @@ minio:
   port: 9000
   consolePort: 9001
   storage: 1Gi
+  bucketEquipment: "equipment-images"
+  bucketOperators: "operator-images"
 
 ingress:
   enabled: true
@@ -49,3 +51,6 @@ app:
   jwtExpiryMs: "86400000"
   defaultSearchRadiusKm: "10"
   maxSearchRadiusKm: "100"
+  corsAllowedOrigins: "http://farmlink.local"
+  springProfilesActive: "prod"
+  springJpaDdlAuto: "validate"

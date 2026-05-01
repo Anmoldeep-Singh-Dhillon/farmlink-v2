@@ -5,7 +5,7 @@ metadata:
 spec:
   replicas: {{ .Values.frontend.replicaCount}}
   selector:
-    matchLables:
+    matchLabels:
       app: farmlink-frontend
   template:
     metadata:
