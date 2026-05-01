@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: farmlink-configmap
+data:
+  POSTGRES_HOST: farmlink-postgres-service
+  POSTGRES_PORT: "{{ .Values.postgres.port }}"
+  POSTGRES_NAME: "{{ .Values.postgres.database }}"
+  JWT_EXPIRY_MS: "{{ .Values.app.jwtExpiryMs }}"
+  MINIO_ENDPOINT: "http://farmlink-minio-service:9000"

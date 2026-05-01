@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: farmlink-frontend-service
+spec:
+  selector:
+    app: farmlink-frontend
+  ports:
+  - port: {{ .Values.frontend.port}}
+    targetPort: {{ .Values.frontend.port}}
+    nodePort: {{ .Values.frontend.nodePort}}
+  type: NodePort

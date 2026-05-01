@@ -1,0 +1,51 @@
+backend:
+  replicaCount: 2
+  image:
+    repository: anmoldhillon/farmlink-backend
+    tag: latest
+  port: 8080         
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi   
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+frontend:
+  replicaCount: 2
+  image:
+    repository: anmoldhillon/farmlink-frontend
+    tag: latest
+  port: 80
+  nodePort: 30080 
+
+postgres:
+  image:
+    repository: postgis/postgis
+    tag: "16-3.4-alpine"    # we need PostGIS not plain postgres!
+  database: farmlink_db
+  username: farmlink_user
+  password: farmlink_pass123
+  port: 5432
+  storage: 1Gi
+
+minio:
+  image:
+    repository: minio/minio
+    tag: latest
+  rootUser: farmlink-minio
+  rootPassword: password123
+  port: 9000
+  consolePort: 9001
+  storage: 1Gi
+
+ingress:
+  enabled: true
+  host: farmlink.local    # for local kind testing
+
+app:
+  jwtSecret: your-jwt-secret-here
+  jwtExpiryMs: "86400000"
+  defaultSearchRadiusKm: "10"
+  maxSearchRadiusKm: "100"
