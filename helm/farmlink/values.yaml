@@ -47,10 +47,11 @@ ingress:
   host: farmlink.local    # for local kind testing
 
 app:
-  jwtSecret: your-jwt-secret-here
+  jwtSecret: ZmFybWxpbmtfc3VwZXJfc2VjcmV0X2tleV9mb3JfSldUX3Rva2Vuc18yMDI1
   jwtExpiryMs: "86400000"
   defaultSearchRadiusKm: "10"
   maxSearchRadiusKm: "100"
   corsAllowedOrigins: "http://farmlink.local"
   springProfilesActive: "prod"
-  springJpaDdlAuto: "validate"
+  springJpaDdlAuto: "none"
+  
