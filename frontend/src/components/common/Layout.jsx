@@ -149,7 +149,7 @@ export default function Layout() {
             <Menu size={20} />
           </button>
 
-          <span className="text-sm font-medium text-gray-600 lg:hidden">🌾 FarmLink</span>
+          <span className="text-sm font-medium text-gray-600 lg:hidden">🌾 FarmClick</span>
 
           {/* Notification bell */}
           <button

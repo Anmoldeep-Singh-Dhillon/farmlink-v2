@@ -43,7 +43,7 @@ export default function LoginPage() {
 
         <div className="text-center mb-8">
           <span className="text-4xl">🌾</span>
-          <h1 className="text-2xl font-bold text-gray-800 mt-2">FarmLink</h1>
+          <h1 className="text-2xl font-bold text-gray-800 mt-2">FarmClick</h1>
           <p className="text-gray-500 text-sm mt-1">Sign in to your account</p>
         </div>
 
