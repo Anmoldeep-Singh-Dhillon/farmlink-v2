@@ -5,6 +5,7 @@ metadata:
   name: farmlink-ingress
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
 spec:
   ingressClassName: nginx
   rules:
@@ -32,12 +33,4 @@ spec:
             name: farmlink-frontend-service
             port:
               number: {{ .Values.frontend.port }}
-
-      - path: /minio-images
-        pathType: Prefix
-        backend:
-          service:
-            name: farmlink-minio-service
-            port:
-              number: 9000        
 {{- end }}

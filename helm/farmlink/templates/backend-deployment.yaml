@@ -69,6 +69,12 @@ spec:
               name: farmlink-configmap
               key: MINIO_ENDPOINT
 
+        - name: MINIO_PUBLIC_URL
+          valueFrom:
+            configMapKeyRef:
+              name: farmlink-configmap
+              key: MINIO_PUBLIC_URL
+
         - name: MINIO_ROOT_USER
           valueFrom:
             secretKeyRef:
