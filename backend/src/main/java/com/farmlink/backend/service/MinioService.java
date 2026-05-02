@@ -25,6 +25,9 @@ public class MinioService {
     @Value("${minio.endpoint}")
     private String endpoint;
 
+    @Value("${minio.public-url}")
+    private String publicUrl;
+
     @PostConstruct
     public void initBuckets() {
         createBucketIfNotExists(equipmentBucket);
@@ -92,7 +95,7 @@ public class MinioService {
     }
 
     public String buildPublicUrl(String bucket, String objectKey) {
-        return endpoint + "/" + bucket + "/" + objectKey;
+        return publicUrl + "/" + bucket + "/" + objectKey;
     }
 
     public String getEquipmentBucket() { return equipmentBucket; }

@@ -32,4 +32,12 @@ spec:
             name: farmlink-frontend-service
             port:
               number: {{ .Values.frontend.port }}
+
+      - path: /minio-images
+        pathType: Prefix
+        backend:
+          service:
+            name: farmlink-minio-service
+            port:
+              number: 9000        
 {{- end }}

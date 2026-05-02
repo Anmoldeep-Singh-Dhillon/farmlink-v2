@@ -8,6 +8,7 @@ data:
   POSTGRES_DB: "{{ .Values.postgres.database }}"
   JWT_EXPIRY_MS: "{{ .Values.app.jwtExpiryMs }}"
   MINIO_ENDPOINT: "http://farmlink-minio-service:9000"
+  MINIO_PUBLIC_URL: "http://farmlink.local:8888/minio-images"
   DEFAULT_SEARCH_RADIUS_KM: "{{ .Values.app.defaultSearchRadiusKm }}"
   MAX_SEARCH_RADIUS_KM: "{{ .Values.app.maxSearchRadiusKm }}"
   APP_PORT: "{{ .Values.backend.port }}"
