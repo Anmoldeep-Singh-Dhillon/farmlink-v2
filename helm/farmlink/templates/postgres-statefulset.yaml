@@ -36,13 +36,13 @@ spec:
                 name: farmlink-secret
                 key: POSTGRES_PASSWORD
         volumeMounts:
-          - name: postgres-storage
+          - name: postgres-data
             mountPath: /var/lib/postgresql/data
-      volumeClaimTemplates:    # ← this replaces volumes section
-      - metadata:
-          name: postgres-data
-        spec:
-          accessModes: ["ReadWriteOnce"]
-          resources:
-            requests:
-              storage: {{ .Values.postgres.storage }}
+  volumeClaimTemplates:    # ← this replaces volumes section
+  - metadata:
+      name: postgres-data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: {{ .Values.postgres.storage }}

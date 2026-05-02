@@ -17,6 +17,10 @@ spec:
       - name: farmlink-minio
         image: {{ .Values.minio.image.repository}}:{{ .Values.minio.image.tag}}
         imagePullPolicy: IfNotPresent
+        command:
+        - /bin/sh
+        - -c
+        - minio server /data --console-address :9001
         ports:
         - containerPort: {{ .Values.minio.port }}
         env:
@@ -45,13 +49,14 @@ spec:
                 key: MINIO_SECRET_KEY
 
         volumeMounts:
-          - name: postgres-storage
-            mountPath: /var/lib/minio/data
-      volumeClaimTemplates:    # ← this replaces volumes section
-      - metadata:
-          name: minio-data
-        spec:
-          accessModes: ["ReadWriteOnce"]
-          resources:
-            requests:
-              storage: {{ .Values.minio.storage }}
+          - name: minio-data
+            mountPath: /data
+  
+  volumeClaimTemplates:    # ← this replaces volumes section
+  - metadata:
+      name: minio-data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: {{ .Values.minio.storage }}

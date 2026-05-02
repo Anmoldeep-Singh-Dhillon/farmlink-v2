@@ -12,13 +12,17 @@ spring:
   # ── JPA / Hibernate ───────────────────────────────────────
   jpa:
     hibernate:
-      ddl-auto: validate          # Schema already created by 01_schema.sql
+      ddl-auto: none          # Schema already created by 01_schema.sql
     show-sql: false               # Set true temporarily to debug queries
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
-
+# ── Flyway ───────────────────────────────────────────────
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
   # ── File Upload ───────────────────────────────────────────
   servlet:
     multipart:
