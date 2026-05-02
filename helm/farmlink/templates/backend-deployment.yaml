@@ -15,7 +15,7 @@ spec:
       containers:
       - name: farmlink-backend
         image: {{ .Values.backend.image.repository}}:{{ .Values.backend.image.tag}}
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         resources:
           requests:
             cpu: {{ .Values.backend.resources.requests.cpu}}
@@ -157,12 +157,13 @@ spec:
           httpGet:
             path: /actuator/health
             port: 8080
-          initialDelaySeconds: 5    # wait before first check
+          initialDelaySeconds: 60    # wait before first check
           periodSeconds: 10          # check every 10 seconds
-
+          failureThreshold: 3
         livenessProbe:
           httpGet:
             path: /actuator/health
             port: 8080
-          initialDelaySeconds: 15   # higher than readiness
+          initialDelaySeconds: 90   # higher than readiness
           periodSeconds: 20
+          failureThreshold: 3
