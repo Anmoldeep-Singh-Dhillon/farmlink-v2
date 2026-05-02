@@ -51,7 +51,7 @@ app:
   jwtExpiryMs: "86400000"
   defaultSearchRadiusKm: "10"
   maxSearchRadiusKm: "100"
-  corsAllowedOrigins: "http://farmlink.local"
+  corsAllowedOrigins: "http://farmlink.local:8888"
   springProfilesActive: "prod"
   springJpaDdlAuto: "none"
   
