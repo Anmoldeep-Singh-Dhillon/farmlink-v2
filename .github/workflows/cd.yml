@@ -1,0 +1,25 @@
+name: CD — Deploy to EC2
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/farmlink-v2
+            git pull origin main
+            sudo chmod 644 /etc/rancher/k3s/k3s.yaml
+            export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+            helm upgrade farmlist helm/farmlink --namespace farmlist
+            kubectl rollout restart deployment/farmlist-backend-deployment -n farmlist
+            kubectl rollout restart deployment/farmlist-frontend-deployment -n farmlist
