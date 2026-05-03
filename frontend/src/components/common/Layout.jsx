@@ -73,7 +73,7 @@ export default function Layout() {
       `}>
         {/* Logo */}
         <div className="flex items-center justify-between px-6 py-5 border-b">
-          <span className="text-xl font-bold text-green-600">🌾 FarmLink</span>
+          <span className="text-xl font-bold text-green-600">🌾 FarmList</span>
           <button onClick={() => setSidebarOpen(false)} className="lg:hidden">
             <X size={20} />
           </button>
@@ -149,7 +149,7 @@ export default function Layout() {
             <Menu size={20} />
           </button>
 
-          <span className="text-sm font-medium text-gray-600 lg:hidden">🌾 FarmClick</span>
+          <span className="text-sm font-medium text-gray-600 lg:hidden">🌾 FarmList</span>
 
           {/* Notification bell */}
           <button

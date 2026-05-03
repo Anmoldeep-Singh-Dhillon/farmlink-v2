@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: farmlink-minio-statefulset
+  name: farmlist-minio-statefulset
 spec:
   replicas: 1 
-  serviceName: farmlink-minio-service 
+  serviceName: farmlist-minio-service 
   selector:
     matchLabels:
-      app: farmlink-minio
+      app: farmlist-minio
   template:
     metadata:
       labels:
-        app: farmlink-minio
+        app: farmlist-minio
     spec:
       containers:
-      - name: farmlink-minio
+      - name: farmlist-minio
         image: {{ .Values.minio.image.repository}}:{{ .Values.minio.image.tag}}
         imagePullPolicy: IfNotPresent
         command:
@@ -27,25 +27,25 @@ spec:
           - name: MINIO_ROOT_USER
             valueFrom:
               secretKeyRef:
-                name: farmlink-secret
+                name: farmlist-secret
                 key: MINIO_ROOT_USER
 
           - name: MINIO_ROOT_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: farmlink-secret
+                name: farmlist-secret
                 key: MINIO_ROOT_PASSWORD
 
           - name: MINIO_ACCESS_KEY
             valueFrom:
               secretKeyRef:
-                name: farmlink-secret
+                name: farmlist-secret
                 key: MINIO_ACCESS_KEY
 
           - name: MINIO_SECRET_KEY
             valueFrom:
               secretKeyRef:
-                name: farmlink-secret
+                name: farmlist-secret
                 key: MINIO_SECRET_KEY
 
         volumeMounts:

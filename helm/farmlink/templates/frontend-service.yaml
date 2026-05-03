@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: farmlink-frontend-service
+  name: farmlist-frontend-service
 spec:
   selector:
-    app: farmlink-frontend
+    app: farmlist-frontend
   ports:
   - port: {{ .Values.frontend.port}}
     targetPort: {{ .Values.frontend.port}}

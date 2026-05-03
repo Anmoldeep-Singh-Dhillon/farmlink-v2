@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: farmlink-ingress
+  name: farmlist-ingress
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: "50m"
@@ -16,21 +16,21 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: farmlink-backend-service
+            name: farmlist-backend-service
             port:
               number: {{ .Values.backend.port }}
       - path: /assets
         pathType: Prefix
         backend:
           service:
-            name: farmlink-frontend-service
+            name: farmlist-frontend-service
             port:
               number: {{ .Values.frontend.port }}
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: farmlink-frontend-service
+            name: farmlist-frontend-service
             port:
               number: {{ .Values.frontend.port }}
 {{- end }}

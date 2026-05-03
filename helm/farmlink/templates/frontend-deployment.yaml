@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: farmlink-frontend-deployment
+  name: farmlist-frontend-deployment
 spec:
   replicas: {{ .Values.frontend.replicaCount}}
   selector:
     matchLabels:
-      app: farmlink-frontend
+      app: farmlist-frontend
   template:
     metadata:
       labels:
-        app: farmlink-frontend
+        app: farmlist-frontend
     spec:
       containers:
-      - name: farmlink-frontend
+      - name: farmlist-frontend
         image: {{ .Values.frontend.image.repository}}:{{ .Values.frontend.image.tag}}
         imagePullPolicy: Always
         ports:

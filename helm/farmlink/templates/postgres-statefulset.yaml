@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: farmlink-postgres-statefulset
+  name: farmlist-postgres-statefulset
 spec:
   replicas: 1 
-  serviceName: farmlink-postgres-service 
+  serviceName: farmlist-postgres-service 
   selector:
     matchLabels:
-      app: farmlink-postgres
+      app: farmlist-postgres
   template:
     metadata:
       labels:
-        app: farmlink-postgres
+        app: farmlist-postgres
     spec:
       containers:
-      - name: farmlink-postgres
+      - name: farmlist-postgres
         image: {{ .Values.postgres.image.repository}}:{{ .Values.postgres.image.tag}}
         imagePullPolicy: IfNotPresent
         ports:
@@ -23,17 +23,17 @@ spec:
           - name: POSTGRES_DB
             valueFrom:
               configMapKeyRef:
-                name: farmlink-configmap
+                name: farmlist-configmap
                 key: POSTGRES_DB
           - name: POSTGRES_USER
             valueFrom:
               secretKeyRef:
-                name: farmlink-secret
+                name: farmlist-secret
                 key: POSTGRES_USER
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: farmlink-secret
+                name: farmlist-secret
                 key: POSTGRES_PASSWORD
         volumeMounts:
           - name: postgres-data

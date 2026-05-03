@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: farmlink-minio-ingress
+  name: farmlist-minio-ingress
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /$2
@@ -15,6 +15,6 @@ spec:
         pathType: ImplementationSpecific
         backend:
           service:
-            name: farmlink-minio-service
+            name: farmlist-minio-service
             port:
               number: 9000

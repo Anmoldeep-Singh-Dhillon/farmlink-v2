@@ -1,6 +1,6 @@
 apiVersion: v2
-name: farmlink
-description: Helm chart for FarmLink farm equipment rental platform
+name: farmlist
+description: Helm chart for farmlist farm equipment rental platform
 type: application
 version: 0.1.0
 appVersion: "1.0.0"
